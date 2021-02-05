@@ -43,6 +43,19 @@ class RestController extends AppController {
         $this->set('_serialize', 'data');
     }
 
+    protected function correctedParam(array $param) {
+        if ($param == null || !is_array($param) || count($param) == 2) {
+            return $param;
+        }
+        $params = [$param[0]];
+        $arr = [];
+        for ($i = 1; $i < count($param); $i++) {
+            $arr[] = $param[$i];
+        }
+        $params[] = implode("::", $arr);
+        return $params;
+    }
+
     protected function success($data) {
         $this->set('data', [
             "type" => "success",
