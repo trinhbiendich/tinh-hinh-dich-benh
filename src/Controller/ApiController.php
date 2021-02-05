@@ -53,8 +53,28 @@ class ApiController extends RestController {
     }
 
     public function del(...$param) {
-        $this->set('data', ["del" => $param]);
-        $this->set('_serialize', 'data');
+        if ($this->invalid($param)) {
+            $this->error("path invalid or not found");
+            return;
+        }
+        $data = Cache::read($param[0]);
+        if ($data == null) {
+            $this->error($param[0] . " not found");
+            return;
+        }
+        if (!isset($param[1]) || empty($param[1])) {
+            Cache::delete($param[0]);
+            $this->success("delete " . $param[0] . " success");
+            return;
+        }
+        if (!isset($data[$param[1]])) {
+            $this->error($param[1] . " do not found on " . $param[0]);
+            return;
+        }
+        unset($data[$param[1]]);
+        Cache::write($param[0], $data);
+        $this->success($data);
+        return;
     }
 
 
