@@ -20,7 +20,7 @@ class ApiController extends RestController {
             $this->error($param[0] . " not found");
             return;
         }
-        if (isset($param[1]) && !empty($param[1])) {
+        if (isset($param[1]) && !empty($param[1]) && isset($data[$param[1]])) {
             $data = $data[$param[1]];
         }
         if ($data == null) {
