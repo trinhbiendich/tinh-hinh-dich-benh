@@ -26,7 +26,7 @@ class ApiController extends RestController {
         }
 
         if (isset($data[$params[1]])) {
-            $data = $data[$param[1]];
+            $data = $data[$params[1]];
             $this->success($data);
             return;
         }
