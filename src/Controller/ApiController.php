@@ -74,7 +74,6 @@ class ApiController extends RestController {
         unset($data[$param[1]]);
         Cache::write($param[0], $data);
         $this->success($data);
-        return;
     }
 
 
