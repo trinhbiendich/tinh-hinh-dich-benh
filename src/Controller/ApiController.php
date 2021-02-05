@@ -20,14 +20,17 @@ class ApiController extends RestController {
             $this->error($params[0] . " not found");
             return;
         }
-        if (isset($params[1]) && !empty($params[1]) && isset($data[$params[1]])) {
-            $data = $data[$param[1]];
-        }
-        if ($data == null) {
-            $this->error($params[1] . " do not found on " . $params[0]);
+        if (!isset($params[1]) || empty($params[1])) {
+            $this->success($data);
             return;
         }
-        $this->success($data);
+
+        if (isset($data[$params[1]])) {
+            $data = $data[$param[1]];
+            $this->success($data);
+            return;
+        }
+        $this->error($params[1] . " do not found on " . $params[0]);
     }
 
     public function add(...$param) {
