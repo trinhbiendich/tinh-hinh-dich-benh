@@ -5,8 +5,6 @@ namespace App\Controller;
 
 
 use Cake\Cache\Cache;
-use Cake\Http\Client\Request;
-use Cake\Http\Response;
 
 class ApiController extends RestController {
 
