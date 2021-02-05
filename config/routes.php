@@ -14,18 +14,17 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->fallbacks();
 });
 
-/*
- * If you need a different set of middleware or none at all,
- * open new scope and define routes there.
- *
- * ```
- * $routes->scope('/api', function (RouteBuilder $builder) {
- *     // No $builder->applyMiddleware() here.
- *
- *     // Parse specified extensions from URLs
- *     // $builder->setExtensions(['json', 'xml']);
- *
- *     // Connect API actions here.
- * });
- * ```
- */
+
+ #If you need a different set of middleware or none at all,
+ # new scope and define routes there.
+
+ $routes->scope('/api', function (RouteBuilder $builder) {
+     // No $builder->applyMiddleware() here.
+     $builder->get('/*', ['controller' => 'Api', 'action' => 'show']);
+     $builder->post("/*", ['controller' => 'Api', 'action' => 'add']);
+     $builder->delete("/*", ['controller' => 'Api', 'action' => 'del']);
+     // Parse specified extensions from URLs
+     $builder->setExtensions(['json']);
+
+     // Connect API actions here.
+ });
