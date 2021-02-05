@@ -4,10 +4,19 @@
 namespace App\Controller;
 
 
+use Cake\Event\EventInterface;
+
 class RestController extends AppController {
     public function initialize(): void {
         parent::initialize();
         $this->RequestHandler->renderAs($this, 'json');
+    }
+
+    public function beforeFilter(EventInterface $event) {
+        parent::beforeFilter($event);
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST');
+        header("Access-Control-Allow-Headers: X-Requested-With");
     }
 
     protected function invalid($param) {
