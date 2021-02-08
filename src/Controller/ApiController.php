@@ -19,10 +19,10 @@ class ApiController extends RestController {
         if ($data == null) {
 
             $data = [
-                "_cake_core_" => Cache::getConfig('default'),
+                "default" => Cache::getConfig('default'),
                 "_cake_core_" => Cache::getConfig('_cake_core_'),
-                "_cake_core_" => Cache::getConfig('_cake_model_'),
-                "_cake_core_" => Cache::getConfig('_cake_routes_')
+                "_cake_model_" => Cache::getConfig('_cake_model_'),
+                "_cake_routes_" => Cache::getConfig('_cake_routes_')
             ];
 
             $this->error($data);
