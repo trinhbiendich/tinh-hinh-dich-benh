@@ -62,7 +62,6 @@ class ApiController extends RestController {
         } else {
             $data = $saveData;
         }
-        $data['duration'] = '+2 years';
         Cache::write($params[0], $data);
         $this->success($saveData);
     }
