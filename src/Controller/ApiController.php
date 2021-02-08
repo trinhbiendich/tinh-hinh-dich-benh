@@ -17,7 +17,16 @@ class ApiController extends RestController {
 
         $data = Cache::read($params[0]);
         if ($data == null) {
-            $this->error($params[0] . " not found");
+
+            $data = [
+                "_cake_core_" => Cache::getConfig('default'),
+                "_cake_core_" => Cache::getConfig('_cake_core_'),
+                "_cake_core_" => Cache::getConfig('_cake_model_'),
+                "_cake_core_" => Cache::getConfig('_cake_routes_')
+            ];
+
+            $this->error($data);
+            //$this->error($params[0] . " not found");
             return;
         }
         if (!isset($params[1]) || empty($params[1])) {
