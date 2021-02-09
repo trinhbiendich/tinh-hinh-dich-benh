@@ -7,7 +7,7 @@ use Cake\Routing\RouteBuilder;
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
-$routes->scope('/', function (RouteBuilder $builder) {
+$routes->scope('/public', function (RouteBuilder $builder) {
 
     $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
     $builder->connect('/pages/*', ['controller' => 'Pages', 'action' => 'pages']);
@@ -18,7 +18,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
  #If you need a different set of middleware or none at all,
  # new scope and define routes there.
 
- $routes->scope('/api', function (RouteBuilder $builder) {
+ $routes->scope('/', function (RouteBuilder $builder) {
      // No $builder->applyMiddleware() here.
      $builder->get('/*', ['controller' => 'Api', 'action' => 'show']);
      $builder->post("/*", ['controller' => 'Api', 'action' => 'add']);
