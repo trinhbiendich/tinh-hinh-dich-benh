@@ -59,7 +59,7 @@ class ApiController extends RestController {
         }
         if (isset($params[1]) && !empty($params[1])) {
             if (isset($data[$params[1]]) && is_array($data[$params[1]])) {
-                $data[$params[1]] = array_merge($data[$params[1]], $saveData);
+                $data[$params[1]] = array_unique(array_merge($data[$params[1]], $saveData), SORT_REGULAR);
             } else {
                 $data[$params[1]] = $saveData;
             }
