@@ -58,7 +58,11 @@ class ApiController extends RestController {
             $this->error("data invalid");
         }
         if (isset($params[1]) && !empty($params[1])) {
-            $data[$params[1]] = $saveData;
+            if (isset($data[$params[1]]) && is_array($data[$params[1]])) {
+                $data[$params[1]] = array_merge($data[$params[1]], $saveData);
+            } else {
+                $data[$params[1]] = $saveData;
+            }
         } else {
             $data = $saveData;
         }
