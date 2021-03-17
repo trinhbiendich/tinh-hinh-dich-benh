@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use Cake\Cache\Cache;
+use Cake\Log\Log;
 
 class ApiController extends RestController {
 
@@ -49,25 +50,35 @@ class ApiController extends RestController {
         }
         $params = $this->correctedParam($param);
 
-        $data = Cache::read($params[0]);
-        if ($data == null) {
-            $data = [];
+        $dataFromStorage = Cache::read($params[0]);
+        if ($dataFromStorage == null) {
+            $dataFromStorage = [];
         }
-        $saveData = $this->request->getParsedBody();
-        if (count($saveData) == 0) {
+        $dataFromRequest = $this->request->getParsedBody();
+        if (count($dataFromRequest) == 0) {
             $this->error("data invalid");
         }
+
         if (isset($params[1]) && !empty($params[1])) {
-            if (isset($data[$params[1]]) && is_array($data[$params[1]])) {
-                $data[$params[1]] = array_unique(array_merge($data[$params[1]], $saveData), SORT_REGULAR);
+            if (isset($dataFromStorage[$params[1]])) {
+                foreach ($dataFromRequest as $key => $value) {
+                    if (is_numeric($key)) {
+                        if (in_array($value, $dataFromStorage[$params[1]])) {
+                            continue;
+                        }
+                        array_push($dataFromStorage[$params[1]], $value);
+                        continue;
+                    }
+                    $dataFromStorage[$params[1]][$key] = $value;
+                }
             } else {
-                $data[$params[1]] = $saveData;
+                $dataFromStorage[$params[1]] = $dataFromRequest;
             }
         } else {
-            $data = $saveData;
+            $dataFromStorage = $dataFromRequest;
         }
-        Cache::write($params[0], $data);
-        $this->success($saveData);
+        Cache::write($params[0], $dataFromStorage);
+        $this->success($dataFromRequest);
     }
 
     public function del(...$param) {
