@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Utils\StringUtils;
 use Cake\Event\EventInterface;
 
 class RestController extends AppController {
@@ -17,6 +18,21 @@ class RestController extends AppController {
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: GET, POST');
         header("Access-Control-Allow-Headers: X-Requested-With");
+
+        if (strtolower($this->request->getMethod()) == 'get') {
+            return;
+        }
+
+        $secStr = $this->request->getHeader('xxx-sec');
+        if (StringUtils::isBlank($secStr)) {
+            $this->denied($secStr, true);
+            exit;
+        }
+
+        if ($secStr[0] != "opencms") {
+            $this->denied($secStr, true);
+            exit;
+        }
     }
 
     protected function invalid($param) {
@@ -54,6 +70,20 @@ class RestController extends AppController {
         }
         $params[] = implode("::", $arr);
         return $params;
+    }
+
+    protected function denied($msg = "This method are not allowed", $isRender = false) {
+        $data = [
+            "type" => "denied",
+            "data" => $msg
+        ];
+        if ($isRender) {
+            header('Content-Type: application/json');
+            echo json_encode($data);
+            return;
+        }
+        $this->set('data', $data);
+        $this->set('_serialize', 'data');
     }
 
     protected function success($data) {
