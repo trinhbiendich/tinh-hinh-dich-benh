@@ -16,8 +16,8 @@ class RestController extends AppController {
     public function beforeFilter(EventInterface $event) {
         parent::beforeFilter($event);
         header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST');
-        header("Access-Control-Allow-Headers: X-Requested-With");
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
+        header("Access-Control-Allow-Headers: X-Requested-With, xxx-sec, access-control-allow-methods, access-control-allow-headers, access-control-allow-origin, access-control-allow-credentials");
 
         if (strtolower($this->request->getMethod()) == 'get') {
             return;
