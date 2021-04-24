@@ -107,7 +107,7 @@ class ApiController extends RestController {
         $this->success($data);
     }
 
-
-
-
+    public function options(...$param) {
+        $this->success($param);
+    }
 }

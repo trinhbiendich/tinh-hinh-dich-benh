@@ -23,6 +23,7 @@ $routes->scope('/public', function (RouteBuilder $builder) {
      $builder->get('/*', ['controller' => 'Api', 'action' => 'show']);
      $builder->post("/*", ['controller' => 'Api', 'action' => 'add']);
      $builder->delete("/*", ['controller' => 'Api', 'action' => 'del']);
+     $builder->options("/*", ['controller' => 'Api', 'action' => 'options']);
      // Parse specified extensions from URLs
      $builder->setExtensions(['json']);
 
