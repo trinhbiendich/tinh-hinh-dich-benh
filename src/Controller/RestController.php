@@ -35,7 +35,7 @@ class RestController extends AppController {
         }
     }
 
-    protected function invalid($param) {
+    public function invalid($param) {
         if (!isset($param)) {
             return true;
         }
@@ -51,7 +51,7 @@ class RestController extends AppController {
         return false;
     }
 
-    protected function error($data) {
+    public function error($data) {
         $this->set('data', [
             "type" => "error",
             "data" => $data
@@ -59,7 +59,7 @@ class RestController extends AppController {
         $this->set('_serialize', 'data');
     }
 
-    protected function correctedParam(array $param) {
+    public function correctedParam(array $param) {
         if ($param == null || !is_array($param) || count($param) == 2) {
             return $param;
         }
@@ -72,7 +72,7 @@ class RestController extends AppController {
         return $params;
     }
 
-    protected function denied($msg = "This method are not allowed", $isRender = false) {
+    public function denied($msg = "This method are not allowed", $isRender = false) {
         $data = [
             "type" => "denied",
             "data" => $msg
@@ -86,7 +86,7 @@ class RestController extends AppController {
         $this->set('_serialize', 'data');
     }
 
-    protected function success($data) {
+    public function success($data) {
         $this->set('data', [
             "type" => "success",
             "data" => $data

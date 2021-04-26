@@ -4,6 +4,8 @@
 namespace App\Controller;
 
 
+use App\Utils\BulkRenderUtils;
+use App\Utils\RenderUtils;
 use Cake\Cache\Cache;
 use Cake\Log\Log;
 
@@ -59,26 +61,18 @@ class ApiController extends RestController {
             $this->error("data invalid");
         }
 
-        if (isset($params[1]) && !empty($params[1])) {
-            if (isset($dataFromStorage[$params[1]])) {
-                foreach ($dataFromRequest as $key => $value) {
-                    if (is_numeric($key)) {
-                        if (in_array($value, $dataFromStorage[$params[1]])) {
-                            continue;
-                        }
-                        array_push($dataFromStorage[$params[1]], $value);
-                        continue;
-                    }
-                    $dataFromStorage[$params[1]][$key] = $value;
-                }
-            } else {
-                $dataFromStorage[$params[1]] = $dataFromRequest;
+        if (isset($dataFromRequest['event'])) {
+            $event = $dataFromRequest['event'];
+
+            if (!isset($dataFromRequest['data'])) {
+                $this->error("data invalid");
+                return;
             }
+
+            BulkRenderUtils::processForEvent($event, $params, $dataFromStorage, $dataFromRequest['data'], $this);
         } else {
-            $dataFromStorage = $dataFromRequest;
+            RenderUtils::processForData($params, $dataFromStorage, $dataFromRequest, $this);
         }
-        Cache::write($params[0], $dataFromStorage);
-        $this->success($dataFromRequest);
     }
 
     public function del(...$param) {
@@ -106,6 +100,8 @@ class ApiController extends RestController {
         Cache::write($params[0], $data);
         $this->success($data);
     }
+
+
 
     public function options(...$param) {
         $this->success($param);
