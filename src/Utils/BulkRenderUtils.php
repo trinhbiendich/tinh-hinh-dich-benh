@@ -26,11 +26,11 @@ class BulkRenderUtils {
             if (!isset($item['id']) || empty($item['id'])) {
                 continue;
             }
-            Cache::write($params[0] . "_" . $item['id'], $item);
+            Cache::write($params . "_" . $item['id'], $item);
             $counter++;
         }
         $dataFromStorage = array_unique(array_merge($dataFromStorage, $ids));
-        Cache::write($params[0], $dataFromStorage);
+        Cache::write($params, $dataFromStorage);
         $triggerEvent->success(["msg" => "save success $counter items into storage", "ids" => $ids]);
     }
 }
