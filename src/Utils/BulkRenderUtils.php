@@ -12,25 +12,25 @@ class BulkRenderUtils {
     public static function processForEvent($event, array $params, array $dataFromStorage, $data, ApiController $triggerEvent) {
         switch ($event) {
             case 'bulk':
-                self::bulkInsert($params, $dataFromStorage, $data, $triggerEvent);
+                self::bulkInsert($params[0], $dataFromStorage, $data, $triggerEvent);
                 return;
             default:
                 $triggerEvent->error('there is no event with name ' . $event);
         }
     }
 
-    private static function bulkInsert(array $params, array $dataFromStorage, array $data, ApiController $triggerEvent) {
-        foreach ($data as $key => $value) {
-            if (!is_numeric($key)) {
-                $dataFromStorage[$params[1]][$key] = $value;
+    private static function bulkInsert($params, array $dataFromStorage, array $data, ApiController $triggerEvent) {
+        $counter = 0;
+        $ids = [];
+        foreach ($data as $item) {
+            if (!isset($item['id']) || empty($item['id'])) {
                 continue;
             }
-            if (in_array($value, $dataFromStorage[$params[1]])) {
-                continue;
-            }
-            array_push($dataFromStorage[$params[1]], $value);
+            Cache::write($params[0] . "_" . $item['id'], $item);
+            $counter++;
         }
+        $dataFromStorage = array_unique(array_merge($dataFromStorage, $ids));
         Cache::write($params[0], $dataFromStorage);
-        $triggerEvent->success($data);
+        $triggerEvent->success(["msg" => "save success $counter items into storage", "ids" => $ids]);
     }
 }
