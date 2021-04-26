@@ -12,7 +12,6 @@ class RenderUtils {
 
     public static function processForData(array $params, array $dataFromStorage, $dataFromRequest, ApiController $triggerEvent){
         if (!isset($params[1]) || empty($params[1])) {
-            $dataFromStorage = $dataFromRequest;
             foreach ($dataFromRequest as $key => $value) {
                 if (!is_numeric($key)) {
                     $dataFromStorage[$key] = $value;
