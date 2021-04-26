@@ -61,7 +61,7 @@ class ApiController extends RestController {
             $this->error("data invalid");
         }
 
-        Log::debug("Delete by paths: " . implode(" => ", $params));
+        Log::debug("paths: " . implode(" => ", $params));
 
         if (isset($dataFromRequest['event'])) {
             $event = $dataFromRequest['event'];
