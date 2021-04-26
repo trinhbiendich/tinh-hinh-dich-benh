@@ -6,17 +6,20 @@ namespace App\Utils;
 
 use App\Controller\ApiController;
 use Cake\Cache\Cache;
+use Cake\Log\Log;
 
 class RenderUtils {
 
     public static function processForData(array $params, array $dataFromStorage, $dataFromRequest, ApiController $triggerEvent){
         if (!isset($params[1]) || empty($params[1])) {
             $dataFromStorage = $dataFromRequest;
+            Log::debug("this case 11111");
             self::renderData($params[0], $dataFromStorage, $triggerEvent, $dataFromRequest);
             return;
         }
 
         if (!isset($dataFromStorage[$params[1]])) {
+            Log::debug("this case 2222");
             $dataFromStorage[$params[1]] = $dataFromRequest;
             self::renderData($params[0], $dataFromStorage, $triggerEvent, $dataFromRequest);
             return;
