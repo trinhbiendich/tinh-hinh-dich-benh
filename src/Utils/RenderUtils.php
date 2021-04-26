@@ -23,7 +23,7 @@ class RenderUtils {
                 }
                 array_push($dataFromStorage, $value);
             }
-            Log::debug("this case 11111");
+            Log::debug("saved " . count($dataFromStorage) . " items");
             self::renderData($params[0], $dataFromStorage, $triggerEvent, $dataFromRequest);
             return;
         }
