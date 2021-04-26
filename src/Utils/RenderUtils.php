@@ -17,6 +17,10 @@ class RenderUtils {
                     $dataFromStorage[$key] = $value;
                     continue;
                 }
+                if (isset($value['id'])) {
+                    $dataFromStorage[$value['id']] = $value;
+                    continue;
+                }
                 if (in_array($value, $dataFromStorage)) {
                     continue;
                 }
@@ -37,6 +41,10 @@ class RenderUtils {
         foreach ($dataFromRequest as $key => $value) {
             if (!is_numeric($key)) {
                 $dataFromStorage[$params[1]][$key] = $value;
+                continue;
+            }
+            if (isset($value['id'])) {
+                $dataFromStorage[$params[1]][$value['id']] = $value;
                 continue;
             }
             if (in_array($value, $dataFromStorage[$params[1]])) {
