@@ -32,7 +32,6 @@ class RenderUtils {
         }
 
         if (!isset($dataFromStorage[$params[1]])) {
-            Log::debug("this case 2222");
             $dataFromStorage[$params[1]] = $dataFromRequest;
             self::renderData($params[0], $dataFromStorage, $triggerEvent, $dataFromRequest);
             return;
