@@ -13,6 +13,16 @@ class RenderUtils {
     public static function processForData(array $params, array $dataFromStorage, $dataFromRequest, ApiController $triggerEvent){
         if (!isset($params[1]) || empty($params[1])) {
             $dataFromStorage = $dataFromRequest;
+            foreach ($dataFromRequest as $key => $value) {
+                if (!is_numeric($key)) {
+                    $dataFromStorage[$key] = $value;
+                    continue;
+                }
+                if (in_array($value, $dataFromStorage)) {
+                    continue;
+                }
+                array_push($dataFromStorage, $value);
+            }
             Log::debug("this case 11111");
             self::renderData($params[0], $dataFromStorage, $triggerEvent, $dataFromRequest);
             return;
