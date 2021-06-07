@@ -18,17 +18,18 @@ class ApiController extends RestController {
         }
         $params = $this->correctedParam($param);
 
+        $eventName = $this->request->getQuery("event", "");
+        switch ($eventName) {
+            case BulkRenderUtils::$BULK_PHOTOS:
+                BulkRenderUtils::renderBulkPhotos($params, $this->request, $this);
+                return;
+            case BulkRenderUtils::$BULK:
+                BulkRenderUtils::renderBulk($params, $this->request, $this);
+                return;
+        }
+
         $data = Cache::read($params[0]);
         if ($data == null) {
-
-            $data = [
-                "default" => Cache::getConfig('default'),
-                "_cake_core_" => Cache::getConfig('_cake_core_'),
-                "_cake_model_" => Cache::getConfig('_cake_model_'),
-                "_cake_routes_" => Cache::getConfig('_cake_routes_')
-            ];
-
-            //$this->error($data);
             $this->error($params[0] . " not found");
             return;
         }
